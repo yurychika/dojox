@@ -316,7 +316,7 @@ dojo.declare("dojox.grid._DeferredTextWidget", dijit._Widget, {
 		keyFilter: null,
 		formatEditing: function(inDatum, inRowIndex){
 			this.needFormatNode(inDatum, inRowIndex);
-			return '<input class="dojoxGridInput" type="text" value="' + inDatum + '">';
+			return '<input class="dojoxGridInput" type="text" value="' + inDatum.replace(/"/g, '&quot;') + '">';
 		},
 		formatNode: function(inNode, inDatum, inRowIndex){
 			this.inherited(arguments);
