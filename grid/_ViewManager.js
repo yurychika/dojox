@@ -85,10 +85,15 @@ dojo.declare('dojox.grid._ViewManager', null, {
 				// depends on the container not having any margin (which it shouldn't)
 				// Also - we only look up the height if the cell doesn't have the
 				// dojoxGridNonNormalizedCell class (like for row selectors)
-				if(!dojo.hasClass(n, "dojoxGridNonNormalizedCell")){
+				
+				// the rowSelectNode has a minimum height because the innerHTML is an blank space
+				//	if all the cell value is empty, and the row node will have a very small height
+				// when set that height to rowSelectNode, mismatch will happen because there is a minimum 
+				// height for rowSelectNode.
+				// if(!dojo.hasClass(n, "dojoxGridNonNormalizedCell")){
 					currHeights[i] = n.firstChild.offsetHeight;
 					h =  Math.max(h, currHeights[i]);
-				}
+				// }
 			}
 			h = (h >= 0 ? h : 0);
 	
