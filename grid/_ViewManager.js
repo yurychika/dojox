@@ -86,14 +86,10 @@ dojo.declare('dojox.grid._ViewManager', null, {
 				// Also - we only look up the height if the cell doesn't have the
 				// dojoxGridNonNormalizedCell class (like for row selectors)
 				
-				
-				// Can't neglect rowSelectNode with dojoxGridNonNormalizedCell class
-				// the rowSelectNode has a minimum height because the innerHTML is an blank space
-				//	if all the cell value is empty, and the row node will have a very small height
-				// when set that height to rowSelectNode, mismatch will happen because there is a minimum 
-				// height for rowSelectNode.
-				currHeights[i] = n.firstChild.offsetHeight;
-				h =  Math.max(h, currHeights[i]);
+				if(!dojo.hasClass(n, "dojoxGridNonNormalizedCell")){
+					currHeights[i] = n.firstChild.offsetHeight;
+					h =  Math.max(h, currHeights[i]);
+				}
 			}
 			h = (h >= 0 ? h : 0);
 	
@@ -101,11 +97,20 @@ dojo.declare('dojox.grid._ViewManager', null, {
 			//A one px increase fixes FireFox 3's rounding bug for fractional font sizes.
 			if((dojo.isMoz || dojo.isIE > 8) && h){h++;}
 		}
+		var maxh = 0;
 		for(i=0; (n=inRowNodes[i]); i++){
 			if(currHeights[i] != h){
 				n.firstChild.style.height = h + "px";
 			}
+			maxh = Math.max(maxh, n.firstChild.offsetHeight);
 		}
+		
+		//check if really normalized
+		if(maxh != h){
+			for(i = 0; (n = inRowNodes[i]); i++){
+				n.firstChild.style.height = maxh + 'px';
+			}
+		}		
 	},
 	
 	resetHeaderNodeHeight: function(){
